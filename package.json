@@ -1,8 +1,8 @@
 {
   "name": "freelancer-invoice",
-  "productName": "Freelancer Invoice",
+  "productName": "HearthBill",
   "version": "1.0.0",
-  "description": "Offline Electron app for creating invoices for clients (freelancer edition). Local SQLite database, no internet sync.",
+  "description": "HearthBill is a free, offline invoice app for freelancers. Local SQLite database, no cloud sync, A4 PDF invoices, no subscription.",
   "main": "electron/main.js",
   "author": "Kash",
   "license": "MIT",
@@ -53,17 +53,26 @@
     "wait-on": "^8.0.1"
   },
   "build": {
-    "appId": "com.kash.freelancerinvoice",
-    "productName": "Freelancer Invoice",
-    "directories": { "output": "release" },
+    "appId": "com.kash.hearthbill",
+    "productName": "HearthBill",
+    "directories": {
+      "output": "release"
+    },
     "files": [
       "dist/renderer/**/*",
       "electron/**/*",
       "!electron/harness.js",
       "package.json"
     ],
-    "asarUnpack": ["node_modules/better-sqlite3/**/*"],
+    "asarUnpack": [
+      "node_modules/better-sqlite3/**/*"
+    ],
     "npmRebuild": false,
-    "linux": { "target": ["AppImage"], "category": "Office" }
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Office"
+    }
   }
 }

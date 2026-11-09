@@ -31,11 +31,11 @@ export function Sidebar({
     <aside className="bg-sidebar text-sidebar-foreground flex w-60 shrink-0 flex-col border-r">
       <div className="flex items-center gap-3 px-5 py-5">
         <div className="bg-primary text-primary-foreground flex size-9 items-center justify-center rounded-lg text-sm font-bold">
-          FI
+          HB
         </div>
         <div className="leading-tight">
-          <p className="text-sm font-semibold">Freelancer</p>
-          <p className="text-muted-foreground text-xs">Invoice</p>
+          <p className="text-sm font-semibold">HearthBill</p>
+          <p className="text-muted-foreground text-xs">Offline invoicing</p>
         </div>
       </div>
 

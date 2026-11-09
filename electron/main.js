@@ -22,6 +22,30 @@ app.on('web-contents-created', (_e, contents) => {
 
 let mainWindow;
 
+function migrateLegacyData() {
+  if (process.env.APP_USER_DATA) return;
+
+  const marker = path.join(app.getPath('userData'), '.legacy-migrated');
+  if (fs.existsSync(marker)) return;
+
+  const targetDir = path.join(app.getPath('userData'), 'data');
+  const targetDb = path.join(targetDir, 'invoices.db');
+  if (fs.existsSync(targetDb)) return;
+
+  const legacyName = process.env.LEGACY_APP_NAME || 'Freelancer Invoice';
+  const legacyBase = path.join(app.getPath('appData'), legacyName, 'data');
+  const legacyDb = path.join(legacyBase, 'invoices.db');
+  if (!fs.existsSync(legacyDb)) return;
+
+  fs.mkdirSync(targetDir, { recursive: true });
+  for (const suffix of ['', '-wal', '-shm']) {
+    const from = legacyDb + suffix;
+    if (fs.existsSync(from)) fs.copyFileSync(from, targetDb + suffix);
+  }
+  fs.writeFileSync(marker, new Date().toISOString());
+  console.log('Migrated data from', legacyBase);
+}
+
 function getSettings() {
   return {
     business_name: db.getSetting('business_name'),
@@ -41,7 +65,7 @@ function createWindow() {
     height: 800,
     minWidth: 940,
     minHeight: 620,
-    title: 'Freelancer Invoice',
+    title: 'HearthBill',
     backgroundColor: '#f4f6fa',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -137,6 +161,7 @@ function registerIpc() {
 }
 
 app.whenReady().then(() => {
+  migrateLegacyData();
   db.openDb(app.getPath('userData'));
   registerIpc();
   createWindow();
